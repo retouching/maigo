@@ -1,45 +1,44 @@
-<p>
-  <img src="assets/icon.svg" alt="Maigo icon" width="72" />
+<p align="center">
+  <img alt="maigo" src="docs/assets/icon.svg" width="160">
 </p>
 
-# Maigo
+<h1 align="center">maigo</h1>
 
-Fast, private, offline-first Navidrome client for Android.
+<p align="center">
+  Fast, private, offline-first Navidrome client for Android.
+</p>
 
-Maigo connects to any Navidrome or OpenSubsonic server and mirrors your music library locally so browsing, searching, and playback stay responsive with or without a network connection. It ships with zero telemetry, zero tracking, encrypted local storage, and no dependency on Google Play Services.
+<p align="center">
+  <img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-2.4-7F52FF">
+  <img alt="Android 8.0+" src="https://img.shields.io/badge/Android-8.0%2B-3DDC84">
+  <img alt="License Apache-2.0" src="https://img.shields.io/badge/license-Apache--2.0-blue">
+</p>
 
-## Features
+`maigo` connects to any Navidrome or OpenSubsonic server and keeps your music library locally in an encrypted database so browsing, search, and playback work with or without a network connection. It ships with zero telemetry, zero tracking, and no Google Play Services dependency.
 
-- Connects to any Navidrome / OpenSubsonic server
-- Offline-first library browsing and instant local search across tracks, artists, and albums
-- Explicit offline downloads (albums, playlists, tracks) separate from automatic streaming cache
-- Quick Online / Offline mode switch and manual server refresh
-- Private listening mode (disables Now Playing, scrobbling, and local history)
-- Internet Radio playback from Navidrome
-- Volume normalization (ReplayGain) and equalizer
-- Local playlist folders, pinned items, and listening history
-- Encrypted local database (SQLCipher + Android Keystore) and zero telemetry
+## Build
 
-## Requirements
-
-- Android 8.0 (API 26) or newer
-- A Navidrome or OpenSubsonic-compatible server
-
-## Build from source
-
-Prerequisites: JDK 21+ and Android SDK (`ANDROID_HOME` configured).
+Prerequisites: Android SDK (`ANDROID_HOME` configured) and JDK 21+ (Gradle auto-provisions JDK 21 if needed).
 
 ```bash
 ./gradlew assembleDebug
 ./gradlew assembleRelease
 ```
 
+## Commands
+
+| Command | Purpose |
+|---|---|
+| `./gradlew assembleDebug` | Build debug APK |
+| `./gradlew assembleRelease` | Build minified release APK (R8 full mode) |
+| `./gradlew ktlintCheck` | Check Kotlin code formatting |
+| `./gradlew detekt` | Run static analysis rules |
+| `./gradlew lintDebug` | Run Android Lint checks |
+| `./gradlew testDebugUnitTest` | Run JVM unit, integration, and architecture tests |
+| `./gradlew connectedDebugAndroidTest` | Run instrumented UI and E2E tests on an AVD or device |
+
 ## Documentation
 
-- [Usage](docs/usage.md)
-- [Building from source](docs/building.md)
-- [Privacy](docs/privacy.md)
-
-## License
-
-Licensed under the [Apache License 2.0](LICENSE).
+- [Usage](docs/usage.md): server connection, Online/Offline toggle, downloads vs cache, and private listening mode.
+- [Building from source](docs/building.md): SDK setup, debug/release builds, and signing.
+- [Privacy](docs/privacy.md): zero-telemetry guarantees, encrypted local storage, and permissions.
