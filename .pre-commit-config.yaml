@@ -1,0 +1,39 @@
+default_install_hook_types: [pre-commit, commit-msg, pre-push]
+default_stages: [pre-commit]
+
+repos:
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.5.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: [feat, fix, refactor, test, docs, build, chore]
+
+  - repo: local
+    hooks:
+      - id: ktlint-check
+        name: ktlint check
+        entry: ./gradlew ktlintCheck --daemon
+        language: system
+        types_or: [kotlin]
+        pass_filenames: false
+      - id: detekt
+        name: detekt
+        entry: ./gradlew detekt --daemon
+        language: system
+        types_or: [kotlin]
+        pass_filenames: false
+      - id: push-quality-and-unit-tests
+        name: quality checks and unit tests (whole repository)
+        entry: ./gradlew ktlintCheck detekt lintDebug testDebugUnitTest
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]

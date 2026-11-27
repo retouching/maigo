@@ -1,0 +1,38 @@
+build:
+  maxIssues: 0
+
+style:
+  ForbiddenImport:
+    active: true
+    imports:
+      - value: "android.util.Log"
+        reason: "Use AppLogger from :core:common (android.util.Log is restricted to :core:security)."
+      - value: "kotlinx.coroutines.GlobalScope"
+        reason: "Use structured concurrency with an injected CoroutineScope."
+      - value: "com.google.firebase.*"
+        reason: "Maigo ships with zero telemetry and zero Firebase SDKs."
+      - value: "com.google.android.gms.*"
+        reason: "Maigo has zero Google Play Services dependencies."
+  MagicNumber:
+    active: false
+  MaxLineLength:
+    active: true
+    maxLineLength: 120
+
+potential-bugs:
+  UnsafeCallOnNullableType:
+    active: true
+  IgnoredReturnValue:
+    active: true
+
+exceptions:
+  SwallowedException:
+    active: true
+  TooGenericExceptionCaught:
+    active: true
+
+naming:
+  FunctionNaming:
+    active: true
+    ignoreAnnotated:
+      - "Composable"

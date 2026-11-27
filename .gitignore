@@ -1,0 +1,15 @@
+.gradle/
+build/
+**/build/
+local.properties
+.idea/
+*.iml
+*.jks
+*.keystore
+keystore.properties
+.orchestration/
+ROADMAP.md
+CLAUDE.local.md
+captures/
+.cxx/
+.kotlin/

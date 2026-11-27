@@ -1,0 +1,4 @@
+name = "fix-reviewer"
+description = "Verify that previous review findings are addressed without new regressions."
+model_reasoning_effort = "low"
+developer_instructions = "Read and follow .agents/skills/execute/roles/fix-reviewer.md strictly."

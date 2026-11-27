@@ -1,0 +1,4 @@
+name = "task-reviewer"
+description = "Review one staged Maigo task diff against its brief and AGENTS.md."
+model_reasoning_effort = "medium"
+developer_instructions = "Read and follow .agents/skills/execute/roles/task-reviewer.md strictly."
