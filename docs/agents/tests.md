@@ -14,6 +14,12 @@ Before executing any plan or running E2E verification:
 - **Tier 2 — Integration (`src/test/`, JVM + Robolectric / MockWebServer)**: Room in-memory DAOs/FTS/migrations, OkHttp `MockWebServer` OpenSubsonic parsing & secret redaction, offline-first repositories, and **Konsist** architecture/layout tests.
 - **Tier 3 — UI / E2E (`src/androidTest/`, AVD/Device)**: Compose UI Test + Hilt + local `MockWebServer`.
 
+## Instrumented Test Setup
+- Convention plugins add `androidx.test:runner` and `androidx.test.ext:junit` to every Android module's `androidTestImplementation`; `maigo.android.compose` adds `ui-test-junit4` (plus `ui-test-manifest` in debug). Never drop them: without the runner, every test APK crashes at startup.
+- Use the v2 Compose test API (`androidx.compose.ui.test.junit4.v2.createAndroidComposeRule`); the v1 rule is deprecated and fails `-Werror`.
+- `:app` keeps `MainActivitySmokeTest`, which launches `MainActivity` and checks the app name renders.
+- A physical device works like an AVD: enable USB debugging, authorize the computer, and confirm it shows as `device` in `adb devices`. With several targets attached, pick one with `ANDROID_SERIAL=<serial>`.
+
 ## Commands
 ```bash
 ./gradlew ktlintCheck detekt lintDebug

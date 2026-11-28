@@ -81,6 +81,8 @@ class MaigoAndroidLibraryConventionPlugin : Plugin<Project> {
                 add("testImplementation", platform(libs.findLibrary("junit-bom").get()))
                 add("testImplementation", libs.findLibrary("junit-jupiter").get())
                 add("testRuntimeOnly", libs.findLibrary("junit-platform-launcher").get())
+                add("androidTestImplementation", libs.findLibrary("androidx-test-runner").get())
+                add("androidTestImplementation", libs.findLibrary("androidx-test-ext-junit").get())
             }
         }
     }
