@@ -41,8 +41,8 @@ jobs:
       - name: Static analysis (ktlint, detekt, Android Lint)
         run: ./gradlew ktlintCheck detekt lintDebug --no-daemon --stacktrace
 
-      - name: Unit, Robolectric & architecture tests
-        run: ./gradlew testDebugUnitTest --no-daemon --stacktrace
+      - name: Unit, Robolectric & architecture tests (Tier 1 & Tier 2)
+        run: ./gradlew :core:model:test :core:common:test :core:testing:test testDebugUnitTest --no-daemon --stacktrace
 
       - name: Assemble debug APK
         run: ./gradlew assembleDebug --no-daemon --stacktrace

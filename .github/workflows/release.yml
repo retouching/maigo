@@ -61,8 +61,8 @@ jobs:
           printf '%s' "$MAIGO_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/maigo-release.jks"
           chmod 600 "$RUNNER_TEMP/maigo-release.jks"
 
-      - name: Run quality checks and unit tests
-        run: ./gradlew ktlintCheck detekt lintDebug testDebugUnitTest --no-daemon --stacktrace
+      - name: Run quality checks and Tier 1 & Tier 2 tests
+        run: ./gradlew ktlintCheck detekt lintDebug :core:model:test :core:common:test :core:testing:test testDebugUnitTest --no-daemon --stacktrace
 
       - name: Assemble signed release APK
         env:
