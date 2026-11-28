@@ -58,6 +58,7 @@ Maigo (`party.maigo.music`, `minSdk 26`) is a fast, private, offline-first Navid
 - Conventional Commits in English (`feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `build:`, `chore:`), small focused commits on the current branch (`master`).
 - Never add `Co-Authored-By` trailers. Never push without asking.
 - Fold late review fixes with `git commit --fixup=<sha>` + `GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash` before pushing.
+- Releases: bump `versionCode` / `versionName` in `app/build.gradle.kts`, commit, and tag `v<versionName>` (`.github/workflows/release.yml` auto-generates release notes from code commits).
 
 ## Working with the Owner
 

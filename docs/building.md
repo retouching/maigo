@@ -30,7 +30,7 @@ Release builds enable R8 full mode, resource shrinking, and disable Gradle depen
 GitHub Actions workflows live in `.github/workflows/`:
 
 - `ci.yml` runs `ktlintCheck`, `detekt`, `lintDebug`, `testDebugUnitTest`, `assembleDebug`, and `assembleRelease` on pushes and pull requests to `master`.
-- `release.yml` runs on `v*` tags, verifies the tag matches `versionName` in `app/build.gradle.kts`, builds a signed release APK, verifies its signature with `apksigner`, and publishes the APK and its `.sha256` checksum to a GitHub Release.
+- `release.yml` runs on `v*` tags, verifies the tag matches `versionName` in `app/build.gradle.kts`, builds a signed release APK, verifies its signature with `apksigner`, generates release notes from code commits (`feat`, `fix`, `refactor`, `perf`) since the previous tag, and publishes the APK and its `.sha256` checksum to a GitHub Release.
 
 Configure these repository secrets in GitHub for `release.yml`:
 

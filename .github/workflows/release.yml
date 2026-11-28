@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Verify tag matches versionName and secrets are configured
         env:
@@ -91,6 +93,69 @@ jobs:
           cp "$apk_source" "$apk_target"
           (cd dist && sha256sum "maigo-${GITHUB_REF_NAME}.apk" > "maigo-${GITHUB_REF_NAME}.apk.sha256")
 
+      - name: Generate release notes
+        run: |
+          python3 - <<'PY'
+          import os
+          import pathlib
+          import re
+          import subprocess
+
+          tag = os.environ["GITHUB_REF_NAME"]
+          repo = os.environ["GITHUB_REPOSITORY"]
+          server_url = os.environ.get("GITHUB_SERVER_URL", "https://github.com")
+          sha256_line = pathlib.Path(f"dist/maigo-{tag}.apk.sha256").read_text(encoding="utf-8").strip()
+
+          def run_git(*args: str) -> str:
+              return subprocess.check_output(["git", *args], text=True).strip()
+
+          prev_tags = [
+              t for t in run_git("tag", "--sort=-v:refname", "--merged", tag).splitlines()
+              if t and t != tag
+          ]
+          prev_tag = prev_tags[0] if prev_tags else None
+          rev_range = f"{prev_tag}..{tag}" if prev_tag else tag
+
+          code_types = {"feat", "fix", "refactor", "perf"}
+          commit_re = re.compile(r"^([a-z]+)(?:\([^)]+\))?!?:\s+.+$")
+          raw_commits = run_git("log", "--no-merges", "--format=%s", rev_range).splitlines()
+
+          changes = []
+          for subject in raw_commits:
+              subject = subject.strip()
+              m = commit_re.match(subject)
+              if m and m.group(1) in code_types:
+                  changes.append(f"- {subject}")
+
+          lines = [f"## Maigo {tag}", ""]
+          if changes:
+              lines.extend(["### Changes", "", *changes])
+          else:
+              lines.append("Maintenance release.")
+
+          lines.extend([
+              "",
+              "### Verification",
+              "",
+              "```text",
+              sha256_line,
+              "```",
+          ])
+
+          if prev_tag:
+              lines.extend([
+                  "",
+                  f"**Full Changelog**: {server_url}/{repo}/compare/{prev_tag}...{tag}",
+              ])
+          else:
+              lines.extend([
+                  "",
+                  f"**Full Changelog**: {server_url}/{repo}/commits/{tag}",
+              ])
+
+          pathlib.Path("dist/release-notes.md").write_text("\n".join(lines).strip() + "\n", encoding="utf-8")
+          PY
+
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -100,4 +165,4 @@ jobs:
             "dist/maigo-${GITHUB_REF_NAME}.apk" \
             "dist/maigo-${GITHUB_REF_NAME}.apk.sha256" \
             --title "Maigo ${GITHUB_REF_NAME}" \
-            --generate-notes
+            --notes-file "dist/release-notes.md"
